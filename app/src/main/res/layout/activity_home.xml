@@ -16,7 +16,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/purple_500"
+            android:background="#4CAE50"
             android:title="Absensi Kantor"
             android:titleTextColor="@android:color/white" />
 
@@ -29,11 +29,14 @@
             android:background="#ffffff">
 
             <ImageView
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:src="@drawable/profile_bg"
+                android:id="@+id/imageProfileHome"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:scaleType="centerCrop"
-                android:padding="8dp" />
+                android:src="@drawable/profile_bg"
+                android:layout_margin="16dp"
+                android:background="@drawable/circle_bg" />
+
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -89,12 +92,13 @@
             android:background="#4CAF50">
 
             <TextView
+                android:id="@+id/statusAbsenTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Belum Melakukan Absen Masuk"
-                android:textColor="#FFFFFF"
-                android:textStyle="bold"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:layout_marginTop="16dp"
+                android:textStyle="bold"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -127,12 +131,12 @@
                     android:padding="8dp">
 
                     <ImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@drawable/icon_icon"
-                        android:scaleType="centerCrop"
+                        android:layout_width="71dp"
+                        android:layout_height="57dp"
                         android:background="@drawable/circle_bg"
-                        android:padding="8dp" />
+                        android:padding="8dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/kegiatan_bg" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -148,56 +152,56 @@
                 <LinearLayout
                     android:id="@+id/menuAbsensi"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="100dp"
                     android:layout_columnWeight="1"
-                    android:orientation="vertical"
                     android:gravity="center"
+                    android:orientation="vertical"
                     android:padding="8dp">
 
                     <ImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@drawable/icon_icon"
-                        android:scaleType="centerCrop"
+                        android:layout_width="69dp"
+                        android:layout_height="63dp"
                         android:background="@drawable/circle_bg"
-                        android:padding="8dp" />
+                        android:padding="8dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/absensi_bg" />
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Absensi Harian"
-                        android:textStyle="bold"
+                        android:layout_height="20dp"
                         android:layout_marginTop="8dp"
+                        android:text="Absensi"
                         android:textColor="#000000"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
 
                 <!-- Menu 3: Pengumuman -->
                 <LinearLayout
                     android:id="@+id/menuPengumuman"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="100dp"
                     android:layout_columnWeight="1"
-                    android:orientation="vertical"
                     android:gravity="center"
+                    android:orientation="vertical"
                     android:padding="8dp">
 
                     <ImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@drawable/icon_icon"
-                        android:scaleType="centerCrop"
+                        android:layout_width="68dp"
+                        android:layout_height="60dp"
                         android:background="@drawable/circle_bg"
-                        android:padding="8dp" />
+                        android:padding="8dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/scedule_bg" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Pengumuman"
-                        android:textStyle="bold"
                         android:layout_marginTop="8dp"
+                        android:text="Jadwal"
                         android:textColor="#000000"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
             </GridLayout>
         </ScrollView>
@@ -216,12 +220,16 @@
                 android:layout_weight="1"
                 android:gravity="center">
 
-                <TextView
-                    android:layout_width="72dp"
-                    android:layout_height="25dp"
+                <Button
+                    android:id="@+id/btnBeranda"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:text="Beranda"
-                    android:textColor="#4CAF50"
-                    android:textSize="16sp" />
+                    android:layout_margin="1dp"
+                    android:backgroundTint="#4CAF50"
+                    android:textColor="#FFFFFF"
+                    android:textStyle="bold"/>
+
             </LinearLayout>
 
             <LinearLayout
@@ -229,12 +237,15 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center">
-                <TextView
-                    android:layout_width="72dp"
-                    android:layout_height="25dp"
-                    android:text="Absensi"
-                    android:textColor="#777"
-                    android:textSize="16sp" />
+                <ImageButton
+                    android:id="@+id/btnCameraAbsen"
+                    android:layout_width="80dp"
+                    android:layout_height="75dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/camera_bg"
+                    android:padding="1dp"
+                    android:contentDescription="Kamera Absen" /><!-- opsional -->
             </LinearLayout>
 
             <LinearLayout
@@ -242,12 +253,15 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center">
-                <TextView
-                    android:layout_width="72dp"
-                    android:layout_height="25dp"
+                <Button
+                    android:id="@+id/btnRiwayat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:text="Riwayat"
-                    android:textColor="#777"
-                    android:textSize="16sp" />
+                    android:layout_margin="1dp"
+                    android:backgroundTint="#4CAF50"
+                    android:textColor="#FFFFFF"
+                    android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

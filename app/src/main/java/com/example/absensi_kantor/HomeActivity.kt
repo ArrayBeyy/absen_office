@@ -1,8 +1,11 @@
 package com.example.absensi_kantor
 
 import android.content.Intent
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -12,6 +15,7 @@ import com.example.absensi_kantor.dao.UserDao
 import com.example.absensi_kantor.database.AppDatabase
 import com.example.absensi_kantor.databinding.ActivityHomeBinding
 import kotlinx.coroutines.launch
+import java.io.File
 
 class HomeActivity : AppCompatActivity() {
 
@@ -22,6 +26,9 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
+        window.decorView.systemUiVisibility =
+            View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+        supportActionBar?.hide()
         setContentView(binding.root)
 
         // Pasang toolbar sebagai action bar
@@ -55,7 +62,25 @@ class HomeActivity : AppCompatActivity() {
         userDao = AppDatabase.getDatabase(this).userDao()
         val preferences = getSharedPreferences("user_prefs", MODE_PRIVATE)
         val username = preferences.getString("username", "Guest") ?: "Guest"
+        val profilePath = preferences.getString("profile_pic_path", null)
+
+
+        if (profilePath != null) {
+            val file = File(profilePath)
+            if (file.exists()) {
+                val bitmap = BitmapFactory.decodeFile(file.absolutePath)
+                binding.imageProfileHome.setImageBitmap(bitmap)
+            }
+        }
+
         binding.userNameTextView.text = username
+
+        val sudahAbsen = preferences.getBoolean("sudah_absen_masuk", false)
+        if (sudahAbsen) {
+            binding.statusAbsenTextView.text = "Sudah Melakukan Absen"
+        } else {
+            binding.statusAbsenTextView.text = "Belum Melakukan Absen Masuk"
+        }
 
         lifecycleScope.launch {
             val user = userDao.getUserByUsername(username)
@@ -81,6 +106,19 @@ class HomeActivity : AppCompatActivity() {
         binding.menuPengumuman.setOnClickListener {
             startActivity(Intent(this, PengumumanActivity::class.java))
         }
+        binding.btnRiwayat.setOnClickListener {
+            startActivity(Intent(this, RiwayatActivity::class.java))
+        }
+        binding.btnCameraAbsen.setOnClickListener {
+            val intent = Intent(this, AbsensiActivity::class.java)
+            startActivity(intent)
+        }
+        binding.btnBeranda.setOnClickListener {
+            Toast.makeText(this, "Kamu sedang berada di halaman Beranda", Toast.LENGTH_SHORT).show()
+        }
+        val intent = Intent(this, HomeActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        startActivity(intent)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

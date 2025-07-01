@@ -14,6 +14,9 @@ import com.example.absensi_kantor.database.AppDatabase
 import com.example.absensi_kantor.databinding.ActivityProfileBinding
 import kotlinx.coroutines.launch
 import java.io.InputStream
+import java.io.File
+import java.io.FileOutputStream
+
 
 class ProfileActivity : AppCompatActivity() {
 
@@ -81,10 +84,38 @@ class ProfileActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == PICK_IMAGE && resultCode == Activity.RESULT_OK && data != null) {
             val selectedImage: Uri? = data.data
-            val inputStream: InputStream? = contentResolver.openInputStream(selectedImage!!)
-            val bitmap = BitmapFactory.decodeStream(inputStream)
-            binding.imageProfile.setImageBitmap(bitmap)
-            Toast.makeText(this, "Foto Profile berhasil diganti (hanya tampilan, belum simpan permanen)", Toast.LENGTH_SHORT).show()
+            if (selectedImage != null) {
+                val savedPath = saveImageToInternalStorage(selectedImage)
+
+                if (savedPath != null) {
+                    val bitmap = BitmapFactory.decodeFile(savedPath)
+                    binding.imageProfile.setImageBitmap(bitmap)
+
+                    // Simpan path ke SharedPreferences
+                    val preferences = getSharedPreferences("user_prefs", MODE_PRIVATE)
+                    preferences.edit().putString("profile_pic_path", savedPath).apply()
+
+                    Toast.makeText(this, "Foto Profile berhasil disimpan", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "Gagal menyimpan foto", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    private fun saveImageToInternalStorage(uri: Uri): String? {
+        return try {
+            val inputStream = contentResolver.openInputStream(uri)
+            val fileName = "profile_${System.currentTimeMillis()}.jpg"
+            val file = File(filesDir, fileName)
+            val outputStream = FileOutputStream(file)
+            inputStream?.copyTo(outputStream)
+            outputStream.close()
+            inputStream?.close()
+            file.absolutePath
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
         }
     }
 }
