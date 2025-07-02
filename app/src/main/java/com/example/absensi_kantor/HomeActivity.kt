@@ -16,6 +16,12 @@ import com.example.absensi_kantor.database.AppDatabase
 import com.example.absensi_kantor.databinding.ActivityHomeBinding
 import kotlinx.coroutines.launch
 import java.io.File
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 class HomeActivity : AppCompatActivity() {
 
@@ -74,13 +80,20 @@ class HomeActivity : AppCompatActivity() {
         }
 
         binding.userNameTextView.text = username
-
         val sudahAbsen = preferences.getBoolean("sudah_absen_masuk", false)
-        if (sudahAbsen) {
-            binding.statusAbsenTextView.text = "Sudah Melakukan Absen"
-        } else {
-            binding.statusAbsenTextView.text = "Belum Melakukan Absen Masuk"
+        val prefs = getSharedPreferences("user_prefs", MODE_PRIVATE)
+        val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+        val lastAbsenDate = prefs.getString("last_absen_date", null)
+
+        if (lastAbsenDate != today) {
+            // Reset status absen harian
+            prefs.edit()
+                .putBoolean("sudah_absen_masuk", false)
+                .putBoolean("sudah_absen_pulang", false)
+                .putString("last_absen_date", today)
+                .apply()
         }
+        updateStatusAbsen()
 
         lifecycleScope.launch {
             val user = userDao.getUserByUsername(username)
@@ -113,12 +126,22 @@ class HomeActivity : AppCompatActivity() {
             val intent = Intent(this, AbsensiActivity::class.java)
             startActivity(intent)
         }
+
+        binding.menuCuti.setOnClickListener {
+            startActivity(Intent(this, CutiActivity::class.java))
+        }
+
+        binding.textSisaCuti.setOnClickListener {
+            startActivity(Intent(this, LaporanCutiActivity::class.java))
+        }
+
         binding.btnBeranda.setOnClickListener {
             Toast.makeText(this, "Kamu sedang berada di halaman Beranda", Toast.LENGTH_SHORT).show()
         }
-        val intent = Intent(this, HomeActivity::class.java)
+
+        /*al intent = Intent(this, HomeActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
-        startActivity(intent)
+        startActivity(intent)*/
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -127,4 +150,32 @@ class HomeActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
+
+    private fun updateStatusAbsen() {
+        val prefs = getSharedPreferences("user_prefs", MODE_PRIVATE)
+        val sudahMasuk = prefs.getBoolean("sudah_absen_masuk", false)
+        val sudahPulang = prefs.getBoolean("sudah_absen_pulang", false)
+
+        val currentTime = Calendar.getInstance()
+        val batasWaktu = Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, 8)
+            set(Calendar.MINUTE, 45)
+        }
+
+        when {
+            sudahPulang -> {
+                binding.statusAbsenTextView.text = "Selamat Pulang!"
+            }
+            sudahMasuk -> {
+                binding.statusAbsenTextView.text = "Sudah Melakukan Absen"
+            }
+            currentTime.after(batasWaktu) -> {
+                binding.statusAbsenTextView.text = "Terlambat"
+            }
+            else -> {
+                binding.statusAbsenTextView.text = "Belum Melakukan Absen Masuk"
+            }
+        }
+    }
+
 }

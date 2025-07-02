@@ -18,6 +18,7 @@ class RiwayatAdapter : ListAdapter<AbsenRiwayat, RiwayatAdapter.ViewHolder>(Diff
         val tanggal: TextView = itemView.findViewById(R.id.textTanggal)
         val jam: TextView = itemView.findViewById(R.id.textJam)
         val status: TextView = itemView.findViewById(R.id.textStatus)
+        val keteranganText: TextView = itemView.findViewById(R.id.keteranganText)
         val foto: ImageView = itemView.findViewById(R.id.imageFoto) // Tambahkan ini
     }
 
@@ -32,6 +33,8 @@ class RiwayatAdapter : ListAdapter<AbsenRiwayat, RiwayatAdapter.ViewHolder>(Diff
         holder.tanggal.text = "Tanggal: ${riwayat.tanggal}"
         holder.jam.text = "Jam: ${riwayat.jam}"
         holder.status.text = "Status: ${riwayat.status}"
+        holder.keteranganText.text = "Keterangan: ${riwayat.keterangan ?: "-"}"
+
 
         // Tampilkan foto jika ada
         if (!riwayat.fotoPath.isNullOrEmpty()) {

@@ -9,5 +9,6 @@ data class AbsenRiwayat(
     val tanggal: String,
     val jam: String,
     val status: String,
-    val fotoPath: String? = null // ← Tambahan untuk path foto
+    val fotoPath: String?,
+    val keterangan: String? = null
 )

@@ -56,13 +56,26 @@
         android:text="Ambil Foto Absen"
         android:layout_marginBottom="16dp" />
 
+
     <!-- Preview Foto Absen -->
+    <EditText
+        android:id="@+id/editKeterangan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="@color/cardview_shadow_end_color"
+        android:hint="Keterangan"
+        android:inputType="textMultiLine"
+        android:minLines="2"
+        android:padding="15dp" />
+
     <ImageView
         android:id="@+id/fotoImageView"
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:layout_gravity="center"
-        android:scaleType="centerCrop"
-        android:background="#DDDDDD" />
+        android:background="#DDDDDD"
+        android:padding="15dp"
+        android:scaleType="centerCrop" />
 
 </LinearLayout>

@@ -15,6 +15,15 @@
         android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"
         tools:targetApi="31">
         <activity
+            android:name=".LaporanCutiActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EditKegiatanActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CutiActivity"
+            android:exported="false" />
+        <activity
             android:name=".RiwayatActivity"
             android:exported="false" />
         <activity

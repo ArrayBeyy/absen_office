@@ -76,25 +76,34 @@ class AbsensiActivity : AppCompatActivity() {
     private fun saveRiwayat(status: String) {
         val tanggal = binding.tanggalTextView.text.toString().replace("Tanggal: ", "")
         val jam = binding.jamTextView.text.toString().replace("Jam: ", "")
-        val fotoPath = capturedImageFile?.absolutePath // ← Ambil path lokal foto
+        val keterangan = binding.editKeterangan.text.toString().trim()
+        val fotoPath = capturedImageFile?.absolutePath
 
-        val riwayat = AbsenRiwayat(tanggal = tanggal, jam = jam, status = status, fotoPath = fotoPath)
+        val riwayat = AbsenRiwayat(
+            tanggal = tanggal,
+            jam = jam,
+            status = status,
+            fotoPath = fotoPath,
+            keterangan = keterangan
+        )
+
         lifecycleScope.launch {
             database.absenRiwayatDao().insert(riwayat)
         }
 
-        kirimDataKeLaravel(tanggal, jam, status)
+        kirimDataKeLaravel(tanggal, jam, status, keterangan)
     }
 
-    private fun kirimDataKeLaravel(tanggal: String, jam: String, status: String) {
+
+    private fun kirimDataKeLaravel(tanggal: String, jam: String, status: String, keterangan: String) {
         val client = OkHttpClient()
         val requestBodyBuilder = MultipartBody.Builder().setType(MultipartBody.FORM)
             .addFormDataPart("tanggal", tanggal)
             .addFormDataPart("jam", jam)
             .addFormDataPart("status", status)
             .addFormDataPart("username", username)
+            .addFormDataPart("keterangan", keterangan)
 
-        // Sertakan foto jika ada
         if (capturedImageFile != null) {
             val fileRequest = capturedImageFile!!.asRequestBody("image/jpeg".toMediaTypeOrNull())
             requestBodyBuilder.addFormDataPart("foto", capturedImageFile!!.name, fileRequest)

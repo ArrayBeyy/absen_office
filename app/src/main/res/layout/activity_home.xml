@@ -149,8 +149,39 @@
                 </LinearLayout>
 
                 <!-- Menu 2: Absensi Harian -->
+
+                <!-- Menu 3: Pengumuman -->
                 <LinearLayout
                     android:id="@+id/menuAbsensi"
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    android:layout_row="0"
+                    android:layout_column="1"
+                    android:layout_columnWeight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+
+                    <ImageView
+                        android:layout_width="67dp"
+                        android:layout_height="68dp"
+                        android:background="@drawable/circle_bg"
+                        android:padding="8dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/absensi_bg" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="25dp"
+                        android:layout_marginTop="8dp"
+                        android:text="Absensi"
+                        android:textColor="#000000"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/menuPengumuman"
                     android:layout_width="0dp"
                     android:layout_height="100dp"
                     android:layout_columnWeight="1"
@@ -159,26 +190,25 @@
                     android:padding="8dp">
 
                     <ImageView
-                        android:layout_width="69dp"
-                        android:layout_height="63dp"
+                        android:layout_width="70dp"
+                        android:layout_height="59dp"
                         android:background="@drawable/circle_bg"
                         android:padding="8dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/absensi_bg" />
+                        android:src="@drawable/scedule_bg" />
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="20dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="Absensi"
+                        android:text="Jadwal"
                         android:textColor="#000000"
                         android:textSize="14sp"
                         android:textStyle="bold" />
                 </LinearLayout>
-
-                <!-- Menu 3: Pengumuman -->
+                <!-- Menu 4: Cuti -->
                 <LinearLayout
-                    android:id="@+id/menuPengumuman"
+                    android:id="@+id/menuCuti"
                     android:layout_width="0dp"
                     android:layout_height="100dp"
                     android:layout_columnWeight="1"
@@ -192,13 +222,40 @@
                         android:background="@drawable/circle_bg"
                         android:padding="8dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/scedule_bg" />
+                        android:src="@drawable/cuti_bg" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="Jadwal"
+                        android:text="Cuti"
+                        android:textColor="#000000"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+                <!-- Menu 5: Laporan Cuti -->
+                <LinearLayout
+                    android:id="@+id/textSisaCuti"
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    android:layout_columnWeight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+
+                    <ImageView
+                        android:layout_width="68dp"
+                        android:layout_height="60dp"
+                        android:background="@drawable/circle_bg"
+                        android:padding="8dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/cuti_bg" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Laporan Cuti"
                         android:textColor="#000000"
                         android:textSize="14sp"
                         android:textStyle="bold" />
@@ -215,8 +272,8 @@
             android:elevation="4dp">
 
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_width="1dp"
+                android:layout_height="50dp"
                 android:layout_weight="1"
                 android:gravity="center">
 
@@ -224,33 +281,34 @@
                     android:id="@+id/btnBeranda"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="Beranda"
                     android:layout_margin="1dp"
                     android:backgroundTint="#4CAF50"
+                    android:text="Beranda"
                     android:textColor="#FFFFFF"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="50dp"
                 android:layout_weight="1"
                 android:gravity="center">
+
                 <ImageButton
                     android:id="@+id/btnCameraAbsen"
                     android:layout_width="80dp"
-                    android:layout_height="75dp"
+                    android:layout_height="60dp"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="1dp"
                     android:background="@drawable/camera_bg"
-                    android:padding="1dp"
-                    android:contentDescription="Kamera Absen" /><!-- opsional -->
+                    android:contentDescription="Kamera Absen"
+                    android:padding="1dp" /><!-- opsional -->
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="50dp"
                 android:layout_weight="1"
                 android:gravity="center">
                 <Button
