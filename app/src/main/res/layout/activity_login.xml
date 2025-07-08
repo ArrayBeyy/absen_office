@@ -5,7 +5,16 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:padding="24dp">
+    android:padding="24dp"
+    android:background="@android:color/white">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Welcome Back!"
+        android:textSize="24sp"
+        android:textColor="@android:color/black"
+        android:layout_marginBottom="32dp" />
 
     <EditText
         android:id="@+id/usernameEditText"
@@ -13,7 +22,10 @@
         android:layout_height="wrap_content"
         android:hint="Username"
         android:inputType="textPersonName"
-        android:layout_marginBottom="16dp" />
+        android:textColor="#ffffff"
+        android:layout_marginBottom="16dp"
+        android:background="@color/cardview_shadow_start_color"
+        android:padding="12dp" />
 
     <EditText
         android:id="@+id/passwordEditText"
@@ -21,13 +33,20 @@
         android:layout_height="wrap_content"
         android:hint="Password"
         android:inputType="textPassword"
-        android:layout_marginBottom="24dp" />
+        android:layout_marginBottom="24dp"
+        android:textColor="#ffffff"
+        android:background="@color/cardview_shadow_start_color"
+        android:padding="12dp" />
 
     <Button
         android:id="@+id/loginButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Login" />
+        android:text="Login"
+        android:background="@color/purple_200"
+        android:textColor="@android:color/white"
+        android:layout_marginBottom="16dp"
+        android:padding="12dp" />
 
     <TextView
         android:id="@+id/registerLink"

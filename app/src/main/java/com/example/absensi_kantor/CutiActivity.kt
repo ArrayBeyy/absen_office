@@ -2,11 +2,13 @@ package com.example.absensi_kantor
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.absensi_kantor.databinding.ActivityCutiBinding
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import okhttp3.*
 
 class CutiActivity : AppCompatActivity() {
 
@@ -18,25 +20,30 @@ class CutiActivity : AppCompatActivity() {
         binding = ActivityCutiBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        sharedPrefs = getSharedPreferences("cuti_prefs", MODE_PRIVATE)
+        val sharedPrefs = getSharedPreferences("cuti_prefs", MODE_PRIVATE)
+        sharedPrefs.edit().putString("laporan_cuti", Gson().toJson(list)).apply()
 
         binding.btnAjukanCuti.setOnClickListener {
-            val nama = binding.editNama.text.toString()
+            val nama = binding.editNama.text.toString().trim()
             val tanggalMulai = binding.tanggalMulaiEdit.text.toString().trim()
             val tanggalSelesai = binding.tanggalSelesaiEdit.text.toString().trim()
             val alasan = binding.alasanEdit.text.toString().trim()
             val jumlahHari = binding.editJumlahHari.text.toString().toIntOrNull() ?: 0
+
+            // Validasi sebelum kirim dan simpan
+            if (nama.isEmpty() || tanggalMulai.isEmpty() || tanggalSelesai.isEmpty() || alasan.isEmpty() || jumlahHari <= 0) {
+                Toast.makeText(this, "Mohon lengkapi semua field dengan benar", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
             if (jumlahHari > 12) {
                 Toast.makeText(this, "Jumlah cuti tidak boleh melebihi 12 hari", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            if (nama.isEmpty() || tanggalMulai.isEmpty() || tanggalSelesai.isEmpty() || alasan.isEmpty() || jumlahHari <= 0) {
-                Toast.makeText(this, "Mohon lengkapi semua field dengan benar", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
+            kirimCutiKeLaravel(tanggalMulai, tanggalSelesai, alasan)
 
+            // Simpan ke SharedPreferences (lokal)
             val rangeTanggal = "$tanggalMulai - $tanggalSelesai"
             val newCuti = CutiLaporan(nama, rangeTanggal, alasan, jumlahHari)
 
@@ -50,5 +57,45 @@ class CutiActivity : AppCompatActivity() {
             Toast.makeText(this, "Cuti berhasil diajukan", Toast.LENGTH_SHORT).show()
             finish()
         }
+    }
+
+    private fun kirimCutiKeLaravel(tanggalMulai: String, tanggalSelesai: String, alasan: String) {
+        val preferences = getSharedPreferences("user_prefs", MODE_PRIVATE)
+        val username = preferences.getString("username", "Guest") ?: "Guest"
+
+        val client = OkHttpClient()
+        val requestBody = MultipartBody.Builder().setType(MultipartBody.FORM)
+            .addFormDataPart("username", username)
+            .addFormDataPart("tanggal_mulai", tanggalMulai)
+            .addFormDataPart("tanggal_selesai", tanggalSelesai)
+            .addFormDataPart("alasan", alasan)
+            .build()
+
+        val request = Request.Builder()
+            .url("http://10.0.2.2:8000/api/cuti") // pastikan route ini aktif
+            .post(requestBody)
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: java.io.IOException) {
+                Log.e("CutiDebug", "Gagal koneksi: ${e.message}")
+                runOnUiThread {
+                    Toast.makeText(this@CutiActivity, "Gagal kirim cuti ke server", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val responseText = response.body?.string()
+                Log.d("CutiDebug", "Kode respons: ${response.code}")
+                Log.d("CutiDebug", "Isi respons: $responseText")
+                runOnUiThread {
+                    if (response.isSuccessful) {
+                        Toast.makeText(this@CutiActivity, "Cuti berhasil dikirim ke server", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(this@CutiActivity, "Gagal simpan cuti ke server", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        })
     }
 }

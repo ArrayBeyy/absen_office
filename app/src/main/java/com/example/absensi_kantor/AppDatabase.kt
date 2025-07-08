@@ -11,7 +11,7 @@ import com.example.absensi_kantor.Riwayat.AbsenRiwayat
 import com.example.absensi_kantor.dao.UserDao
 import com.example.absensi_kantor.dao.AbsenRiwayatDao
 
-@Database(entities = [User::class, AbsenRiwayat::class], version = 4)
+@Database(entities = [User::class, AbsenRiwayat::class], version = 5)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun userDao(): UserDao
@@ -35,14 +35,15 @@ abstract class AppDatabase : RoomDatabase() {
             override fun migrate(database: SupportSQLiteDatabase) {
                 database.execSQL(
                     """
-                CREATE TABLE IF NOT EXISTS absen_riwayat (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-                    tanggal TEXT NOT NULL,
-                    jam TEXT NOT NULL,
-                    status TEXT NOT NULL,
-                    fotoPath TEXT
-                )
-                """.trimIndent()
+            CREATE TABLE IF NOT EXISTS absen_riwayat (
+                id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                tanggal TEXT NOT NULL,
+                jam TEXT NOT NULL,
+                status TEXT NOT NULL,
+                fotoPath TEXT,
+                keterangan TEXT
+            )
+            """.trimIndent()
                 )
             }
         }
@@ -61,7 +62,7 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     "app_database"
                 )
-                    .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
+                    .fallbackToDestructiveMigration() // ⚠️ Ini akan hapus database saat versi naik
                     .build()
                 INSTANCE = instance
                 instance

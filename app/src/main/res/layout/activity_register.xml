@@ -2,12 +2,27 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="84dp">
+    android:background="#F5F5F5"
+    android:padding="16dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:background="#FFFFFF"
+        android:elevation="4dp"
+        android:layout_margin="16dp"
+        android:clipToPadding="false">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Register"
+            android:textSize="24sp"
+            android:textColor="#333333"
+            android:layout_marginBottom="24dp"
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/usernameEditText"
@@ -15,7 +30,9 @@
             android:layout_height="wrap_content"
             android:hint="Username"
             android:inputType="textPersonName"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginBottom="16dp"
+            android:background="@color/cardview_shadow_start_color"
+            android:padding="12dp" />
 
         <EditText
             android:id="@+id/passwordEditText"
@@ -23,7 +40,9 @@
             android:layout_height="wrap_content"
             android:hint="Password"
             android:inputType="textPassword"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginBottom="16dp"
+            android:background="@color/cardview_shadow_start_color"
+            android:padding="12dp" />
 
         <EditText
             android:id="@+id/emailEditText"
@@ -31,7 +50,9 @@
             android:layout_height="wrap_content"
             android:hint="Email"
             android:inputType="textEmailAddress"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginBottom="16dp"
+            android:background="@color/cardview_shadow_start_color"
+            android:padding="12dp" />
 
         <EditText
             android:id="@+id/jabatanEditText"
@@ -39,7 +60,9 @@
             android:layout_height="wrap_content"
             android:hint="Jabatan"
             android:inputType="textPersonName"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginBottom="16dp"
+            android:background="@color/cardview_shadow_start_color"
+            android:padding="12dp" />
 
         <EditText
             android:id="@+id/nohpEditText"
@@ -47,13 +70,19 @@
             android:layout_height="wrap_content"
             android:hint="No HP"
             android:inputType="phone"
-            android:layout_marginBottom="24dp" />
+            android:layout_marginBottom="24dp"
+            android:background="@color/cardview_shadow_start_color"
+            android:padding="12dp" />
 
         <Button
             android:id="@+id/registerButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Register" />
+            android:text="Register"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#6200EE"
+            android:layout_marginTop="16dp"
+            android:padding="12dp" />
     </LinearLayout>
 
 </ScrollView>

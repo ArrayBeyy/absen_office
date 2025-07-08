@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.widget.Toast
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.absensi_kantor.Riwayat.AbsenRiwayat
@@ -91,7 +92,7 @@ class AbsensiActivity : AppCompatActivity() {
             database.absenRiwayatDao().insert(riwayat)
         }
 
-        kirimDataKeLaravel(tanggal, jam, status, keterangan)
+        kirimDataKeLaravel(tanggal, jam, status,keterangan)
     }
 
 
@@ -104,25 +105,29 @@ class AbsensiActivity : AppCompatActivity() {
             .addFormDataPart("username", username)
             .addFormDataPart("keterangan", keterangan)
 
-        if (capturedImageFile != null) {
+        if (capturedImageFile != null && capturedImageFile!!.exists()) {
             val fileRequest = capturedImageFile!!.asRequestBody("image/jpeg".toMediaTypeOrNull())
             requestBodyBuilder.addFormDataPart("foto", capturedImageFile!!.name, fileRequest)
         }
 
         val requestBody = requestBodyBuilder.build()
         val request = Request.Builder()
-            .url("https://your-backend-api.com/api/absen")
+            .url("http://10.0.2.2:8000/api/absen")
             .post(requestBody)
             .build()
 
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
+                e.printStackTrace() // Tambahkan ini
+                Log.e("AbsensiDebug", "Error: ${e.message}")
                 runOnUiThread {
                     Toast.makeText(this@AbsensiActivity, "Gagal kirim ke server", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onResponse(call: Call, response: Response) {
+                Log.d("AbsensiDebug", "Response code: ${response.code}")
+                Log.d("AbsensiDebug", "Response body: ${response.body?.string()}")
                 runOnUiThread {
                     if (response.isSuccessful) {
                         Toast.makeText(this@AbsensiActivity, "Absen berhasil dikirim ke server", Toast.LENGTH_SHORT).show()
