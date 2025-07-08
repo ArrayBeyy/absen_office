@@ -20,8 +20,7 @@ class CutiActivity : AppCompatActivity() {
         binding = ActivityCutiBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val sharedPrefs = getSharedPreferences("cuti_prefs", MODE_PRIVATE)
-        sharedPrefs.edit().putString("laporan_cuti", Gson().toJson(list)).apply()
+        sharedPrefs = getSharedPreferences("cuti_prefs", MODE_PRIVATE)
 
         binding.btnAjukanCuti.setOnClickListener {
             val nama = binding.editNama.text.toString().trim()
@@ -30,7 +29,7 @@ class CutiActivity : AppCompatActivity() {
             val alasan = binding.alasanEdit.text.toString().trim()
             val jumlahHari = binding.editJumlahHari.text.toString().toIntOrNull() ?: 0
 
-            // Validasi sebelum kirim dan simpan
+            // Validasi
             if (nama.isEmpty() || tanggalMulai.isEmpty() || tanggalSelesai.isEmpty() || alasan.isEmpty() || jumlahHari <= 0) {
                 Toast.makeText(this, "Mohon lengkapi semua field dengan benar", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
@@ -41,9 +40,10 @@ class CutiActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            // Kirim ke server
             kirimCutiKeLaravel(tanggalMulai, tanggalSelesai, alasan)
 
-            // Simpan ke SharedPreferences (lokal)
+            // Simpan lokal ke SharedPreferences
             val rangeTanggal = "$tanggalMulai - $tanggalSelesai"
             val newCuti = CutiLaporan(nama, rangeTanggal, alasan, jumlahHari)
 
